@@ -6,6 +6,11 @@
     
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="static/css/theme.css" media="all" />
+    
+
+
+
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
@@ -23,9 +28,25 @@
       <h2>A recent Reddit Post: {{ reddit_data.title }}</h2>
     </div>
 
-    <div class="chart">
+    <div class="row">
+      <div class="col-md-2">
+        <div class="well">
+          <h5>Choose A Subreddit</h5>
+          <select id="selSub" onchange="optionChanged(this.value)">
+            <option value='wallstreebets'>r/WallStreetBets</option>
+            <option value='stocks'>r/Stocks</option>
+            <option value='investing'>r/Investing</option>
+            <option value='StockMarket'>r/StockMarket</option>
+            <option value='RobinHood'>r/RobinHood</option>
+          </select>
+          
+        </div>
+
+    <div id="chart">
 
 		</div>
+
+    <div id="post_wordcloud"></div>
 
   </body>
   
@@ -37,5 +58,8 @@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
  <script type="text/javascript" src="static/js/app.js"></script>
  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+ <script src="https://d3js.org/d3.v4.js"></script>
+ <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
 </body>
 </html>
