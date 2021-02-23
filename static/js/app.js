@@ -31,7 +31,7 @@ function init() {
             type: "bar"
         };
 
-        var data = [trace1, trace2 ]
+        var data = [trace1, trace2]
 
         var layout = {
             title: "Popular Reddit Investing Sites",
@@ -70,14 +70,14 @@ function alpha() {
 
         var alpha1 = {
             x: date,
-            y: open,
-            type: "line"
+            y: stockClose,
+            type: "bar"
         };
 
         var alpha2 = {
             x: date,
-            y: stockClose,
-            type: "line"
+            y: open,
+            type: "bar"
         };
 
         var graphData = [alpha1, alpha2 ]
@@ -94,6 +94,5 @@ function alpha() {
 function filterAlpha(alphaData, ticker) {
     
     return alphaData.ticker == ticker
-
 }
 alpha()
