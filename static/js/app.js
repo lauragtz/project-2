@@ -53,5 +53,8 @@ function filterSub(redditData, subreddit) {
     return redditData.subreddit == subreddit
 }
 
+d3.json('/alpha_data').then(function(alphaData){
+    console.log(alphaData)
+})
 
 init()
