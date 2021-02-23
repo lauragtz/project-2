@@ -16,7 +16,7 @@ function init() {
         var num_comments = redditData.map(post => post.num_comments);
         var num_upvotes = redditData.map(post => post.num_upvotes);
         var redditor = redditData.map(post => post.redditor);
-        var subreddtit = redditData.map(post => post.subreddit);
+        var subreddit = redditData.map(post => post.subreddit);
         var upvote_ratio = redditData.map(post => post.upvote_ratio);
             
         var trace1 = {
@@ -53,8 +53,47 @@ function filterSub(redditData, subreddit) {
     return redditData.subreddit == subreddit
 }
 
-d3.json('/alpha_data').then(function(alphaData){
-    console.log(alphaData)
-})
 
 init()
+
+function alpha() {
+    d3.json('/alpha_data').then(function(alphaData){
+        console.log(alphaData);
+
+        var ticker = alphaData.map(stock => stock.ticker);
+        var date = alphaData.map(stock => stock.date);
+        var high = alphaData.map(stock => stock.high);
+        var low = alphaData.map(stock => stock.low);
+        var open = alphaData.map(stock => stock.open);
+        var volume = alphaData.map(stock => stock.volume);
+        var stockClose = alphaData.map(stock => stock.close);
+
+        var alpha1 = {
+            x: date,
+            y: open,
+            type: "line"
+        };
+
+        var alpha2 = {
+            x: date,
+            y: stockClose,
+            type: "line"
+        };
+
+        var graphData = [alpha1, alpha2 ]
+
+        var alphaLayout = {
+            title: "Popular stocks",
+            xaxis: {title: 'Date'},
+            yaxis: {title: "Open/Close values"}
+        };
+
+        Plotly.newPlot('graph', graphData, alphaLayout)
+    });
+}
+function filterAlpha(alphaData, ticker) {
+    
+    return alphaData.ticker == ticker
+
+}
+alpha()
