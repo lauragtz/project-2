@@ -3,7 +3,7 @@
 // var subreddit = 'wallstreetbets';
 
 d3.selectAll("#selSub").on("change", updatePlotly);
-
+d3.selectAll("#stock").on("change", updateStock);
 function filterSub(subreddit_name, user_selection) {
     return subreddit_name === user_selection;       
 }
@@ -73,45 +73,52 @@ var user_selection = 'wallstreetbets';
 
 init(user_selection);
 
-init()
-
-function alpha() {
-    d3.json('/alpha_data').then(function(alphaData){
+function filterStock(stock_name, stock_selection) {
+    return stock_name === stock_selection;       
+}
+function alpha(stock_selection) {
+    d3.json('/alpha_data').then(function(alphaData) {
         console.log(alphaData);
 
-        var ticker = alphaData.map(stock => stock.ticker);
-        var date = alphaData.map(stock => stock.date);
-        var high = alphaData.map(stock => stock.high);
-        var low = alphaData.map(stock => stock.low);
-        var open = alphaData.map(stock => stock.open);
-        var volume = alphaData.map(stock => stock.volume);
-        var stockClose = alphaData.map(stock => stock.close);
+    var filteredStock = alphaData.filter(s => filterStock(s.ticker, stock_selection));
+    console.log(filteredStock);
 
-        var alpha1 = {
-            x: date,
-            y: stockClose,
-            type: "bar"
-        };
+    var ticker = filteredStock.map(stock => stock.ticker);
+    var close_date = filteredStock.map(stock => stock.date);
+    var high = filteredStock.map(stock => stock.high);
+    var low = filteredStock.map(stock => stock.low);
+    var open = filteredStock.map(stock => stock.open);
+    var volume = filteredStock.map(stock => stock.volume);
+    var stockClose = filteredStock.map(stock => stock.close);
 
-        var alpha2 = {
-            x: date,
-            y: open,
-            type: "bar"
-        };
+    var alpha1 = {
+        x: close_date,
+        y: stockClose,
+        type: "bar"
+    };
 
-        var graphData = [alpha1, alpha2 ]
+    var graphData = [alpha1]
 
-        var alphaLayout = {
-            title: "Popular stocks",
-            xaxis: {title: 'Date'},
-            yaxis: {title: "Open/Close values"}
-        };
+    var alphaLayout = {
+        title: "Popular stocks",
+        xaxis: {title: 'Date'},
+        yaxis: {title: "Closing values"}
+    };
 
-        Plotly.newPlot('graph', graphData, alphaLayout)
+    Plotly.newPlot('graph', graphData, alphaLayout)
     });
 }
-function filterAlpha(alphaData, ticker) {
+function updateStock() {
+
     
-    return alphaData.ticker == ticker
+    var dropdownStock = d3.select('#stock');
+    var stock_selection = dropdownStock.property("value");
+    console.log(stock_selection)
+    
+    alpha(stock_selection);
+    
 }
-alpha()
+
+var stock_selection = 'GME';
+
+alpha(stock_selection);
