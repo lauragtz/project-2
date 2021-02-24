@@ -9,7 +9,9 @@ from config import mongo_password
 
 app = Flask(__name__)
 
-fields = {'title': True, 'time': True, 'num_comments': True, 'num_upvotes':True, 'upvote_ratio': True, 'link_flair':True, 'redditor':True, 'subreddit':True}
+
+
+fields = {'title': True, 'time': True, 'num_comments': True, 'num_upvotes':True, 'upvote_ratio': True, 'link_flair':True, 'redditor':True, 'subreddit':True, 'post_date': True}
 alpha_fields = {'_id': False}
 
 @app.route("/", methods=['GET'])
