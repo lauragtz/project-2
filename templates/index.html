@@ -5,7 +5,7 @@
     <meta name="description" >
     
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="static/css/theme.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="/static/css/theme.css" media="all" />
     
 
 
@@ -45,18 +45,30 @@
     <div id="chart">
 
 		</div>
+    <div class="row">
+      <div class="col-md-2">
+        <div class="well">
+          <h5>Choose A Stock</h5>
+          <select id="stock" onchange="alphaOption(this.value)">
+            <option value='GME'>GME</option>
+            <option value='TSLA'>TSLA</option>
+            <option value='AMC'>AMC</option>
+            <option value='RIOT'>RIOT</option>
+            <option value='AMD'>AMD</option>
+          </select>
+          
+        </div>
 
-    <div id="post_wordcloud"></div>
-
+    <div id="graph">
   </body>
   
 
 
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
- <script src="static/js/script.js" defer></script>
+ <script src="/static/js/script.js" defer></script>
  <script src="https://d3js.org/d3.v5.min.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
- <script type="text/javascript" src="static/js/app.js"></script>
+ <script type="text/javascript" src="/static/js/app.js"></script>
  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
