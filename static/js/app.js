@@ -8,16 +8,18 @@ function filterSub(subreddit_name, user_selection) {
     return subreddit_name === user_selection;       
 }
 
+
+
 function init(user_selection) {
-    console.log('enter');
+    
         
         d3.json('/data').then(function(redditData){
 
-            console.log(redditData); 
+            // console.log(redditData); 
         
        
         var filteredSub = redditData.filter(d => filterSub(d.subreddit, user_selection));
-        console.log(filteredSub);
+        // console.log(filteredSub);
 
 
         var titles = filteredSub.map(post => post.title);
@@ -48,44 +50,54 @@ function init(user_selection) {
             xaxis: {title: 'Posts'},
             yaxis: {title: "Upvotes"}
         };
-
-        Plotly.newPlot('chart', data, layout)
         
+   
+        Plotly.newPlot('chart', data, layout)
     });
-    console.log('exit');
+    
+    
 }
 
 function updatePlotly() {
 
     
     var dropdownMenu = d3.select('#selSub');
-    // console.log(dropdownMenu.property("value"));
     var user_selection = dropdownMenu.property("value");
-    console.log(user_selection)
+    // console.log(user_selection)
     
     init(user_selection);
     
 }
 
-
-
 var user_selection = 'wallstreetbets';
 
 init(user_selection);
 
-init()
+// init()
 
-function alpha() {
+
+function filterAlpha(ticker_symbol, ticker) {
+    
+    return ticker_symbol === ticker;
+}
+
+function alpha(ticker) {
+    console.log(ticker);
     d3.json('/alpha_data').then(function(alphaData){
         console.log(alphaData);
 
-        var ticker = alphaData.map(stock => stock.ticker);
-        var date = alphaData.map(stock => stock.date);
-        var high = alphaData.map(stock => stock.high);
-        var low = alphaData.map(stock => stock.low);
-        var open = alphaData.map(stock => stock.open);
-        var volume = alphaData.map(stock => stock.volume);
-        var stockClose = alphaData.map(stock => stock.close);
+
+        var filteredTicker = alphaData.filter(s => filterAlpha(s.ticker, ticker));
+        console.log(filteredTicker);
+
+        var ticker = filteredTicker.map(stock => stock.ticker);
+        console.log(ticker);
+        var date = filteredTicker.map(stock => stock.date);
+        var high = filteredTicker.map(stock => stock.high);
+        var low = filteredTicker.map(stock => stock.low);
+        var open = filteredTicker.map(stock => stock.open);
+        var volume = filteredTicker.map(stock => stock.volume);
+        var stockClose = filteredTicker.map(stock => stock.close);
 
         var alpha1 = {
             x: date,
@@ -99,7 +111,7 @@ function alpha() {
             type: "bar"
         };
 
-        var graphData = [alpha1, alpha2 ]
+        var graphData = [alpha1, alpha2]
 
         var alphaLayout = {
             title: "Popular stocks",
@@ -110,8 +122,98 @@ function alpha() {
         Plotly.newPlot('graph', graphData, alphaLayout)
     });
 }
-function filterAlpha(alphaData, ticker) {
+
+
+
+var ticker = 'GME'
+
+alpha(ticker)
+
+d3.selectAll("#stock").on("change", updateAlpha);
+function updateAlpha() {
+
     
-    return alphaData.ticker == ticker
+    var dropdownMenu = d3.select('#stock');
+    var ticker = dropdownMenu.property("value");
+    // console.log(ticker);
+    
+    alpha(ticker);
+    
 }
-alpha()
+
+
+
+
+var comments_data = []
+var dates = []
+
+d3.json('/data').then(function(redditData){
+
+    // console.log(redditData); 
+
+
+    var filteredSub = redditData.filter(d => filterSub(d.subreddit, user_selection));
+    var num_comments = filteredSub.map(post => post.num_comments);
+    var post_date = filteredSub.map(post => post.post_date)
+
+    comments_data.push(num_comments);
+    dates.push(post_date);
+});
+
+
+var ticker_data = [];
+
+d3.json('/alpha_data').then(function(alphaData){
+
+    var filteredTicker = alphaData.filter(d => filterAlpha(d.ticker, ticker));
+    var high = filteredTicker.map(stock => stock.high);
+
+    ticker_data.push(high)
+
+
+});
+
+
+var options = {
+    series: [{
+//     name: 'Posts',
+//     type: 'column',
+//     data: comments_data
+//   }, {
+    name: 'Stock',
+    type: 'line',
+    data: ticker_data
+  }],
+    chart: {
+    height: 350,
+    type: 'line',
+  },
+  stroke: {
+    width: [0, 4]
+  },
+  title: {
+    text: 'Top Reddit Posts vs. Stock Price'
+  },
+  dataLabels: {
+    enabled: true,
+    enabledOnSeries: [1]
+  },
+  labels: dates,
+  xaxis: {
+    type: 'datetime'
+  },
+  yaxis: [{
+    title: {
+      text: 'Number of Upvotes',
+    },
+  
+//   }, {
+//     opposite: true,
+//     title: {
+//       text: 'Stock Price'
+//     }
+  }]
+  };
+
+  var chart = new ApexCharts(document.querySelector("#mixed-chart"), options);
+  chart.render();

@@ -6,6 +6,7 @@
     
     <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/static/css/theme.css" media="all" />
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     
 
 
@@ -49,7 +50,7 @@
       <div class="col-md-2">
         <div class="well">
           <h5>Choose A Stock</h5>
-          <select id="stock" onchange="alphaOption(this.value)">
+          <select id="stock" onchange="updateAlpha(this.value)">
             <option value='GME'>GME</option>
             <option value='TSLA'>TSLA</option>
             <option value='AMC'>AMC</option>
@@ -59,7 +60,9 @@
           
         </div>
 
-    <div id="graph">
+    <div id="graph"></div>
+
+    <div id="mixed-chart"></div>
   </body>
   
 
@@ -71,6 +74,7 @@
  <script type="text/javascript" src="/static/js/app.js"></script>
  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+ 
 
 </body>
 </html>
